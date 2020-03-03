@@ -61,6 +61,33 @@ const schema = () => {
     }
   });
 
+  knex.schema.hasTable("featured").then(function(exists) {
+    if (!exists) {
+      return knex.schema.createTable("featured", function(t) {
+        t.increments("id").primary();
+        t.integer('user_id').notNullable();
+        t.string('email').notNullable();
+        t.string('phoneno').notNullable();
+        t.string('imageurl1').notNullable();
+        t.string('imageurl2').notNullable();
+        t.string('imageurl3').notNullable();
+        t.string('imageurl4').notNullable();
+        t.integer('bedrooms').notNullable();
+        t.integer('sittingrooms').notNullable();
+        t.integer('toilets').notNullable();
+        t.string('date-added').notNullable();
+        t.string('type').notNullable();
+        t.string('status').notNullable();
+        t.string('address').notNullable();
+        t.string('state').notNullable();
+        t.string('price').notNullable();
+        t.string('payment_plan').notNullable();
+        t.boolean('verified').defaultTo(false);
+        t.timestamp("date").defaultTo(knex.fn.now());
+      });
+    }
+  });
+
   // Hostels table
   knex.schema.hasTable("hostel").then(function(exists) {
     if (!exists) {
@@ -281,6 +308,8 @@ const schema = () => {
       });
     }
   });
+
+  
 
 };
 

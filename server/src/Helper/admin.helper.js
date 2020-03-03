@@ -41,4 +41,25 @@ module.exports = class AdminHelper {
         }
         return sendGrid.send(message);
     }
+
+    static async sendFeaturedUpload({ userid, notification }){
+        sendGrid.setApiKey(process.env.MAIL_API_KEY);
+        var message;
+        const user = await knex('users').where({ id: userid }).returning('*')
+        message = {
+            to: 'sheruta.ng@gmail.com',
+            from: 'chukwuemekaifeora@gmail.com',
+            subject: 'Someone Uploaded An Apartment',
+            text: notification,
+            html: `
+            <div>
+                <h4>Email: <small>${user[0].email}</small></h4> <br /> 
+                <h4>Username: <small>${user[0].username}</small></h4> <br /> 
+                <h4>Phone NO: <small>${user[0].phoneno}</small></h4> <br /> 
+                <h5>${user[0].fullname} Just uploaded an apartment</h5> <br />
+            </div>
+            `
+        };
+        return sendGrid.send(message);
+    }
 }

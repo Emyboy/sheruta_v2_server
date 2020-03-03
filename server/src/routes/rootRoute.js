@@ -13,6 +13,7 @@ const blogRoute = require('./blogRoute');
 const scrapingRoute = require('./ScrapingRoute');
 const messageRoute = require('./messageRoute');
 const viewRoute = require('./viewRoute');
+const featuredRoute = require('./featuredRoute');
 
 rootRoute.use(sharedRoute);
 rootRoute.use(hostelRoute);
@@ -27,7 +28,7 @@ rootRoute.use(blogRoute);
 rootRoute.use(scrapingRoute);
 rootRoute.use(messageRoute);
 rootRoute.use(viewRoute);
-
+rootRoute.use(featuredRoute);
 
 
 module.exports = rootRoute;
