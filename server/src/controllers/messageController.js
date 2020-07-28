@@ -1,6 +1,22 @@
 const knex = require('../../Knex');
 
 class MessageController {
+
+    /**
+     * @description - This method gets all messages
+     * @param {object} req 
+     * @param {object} res 
+     */
+    static getAllMessage(req, res){
+        knex.select('*').from('message').returning('*')
+            .then(messages => {
+                res.json(messages);
+            })
+            .catch(err => {
+                res.status(400).json(err);
+            })
+    }
+
     /**
      * @description - This method adds a message
      * @param {object} req 
