@@ -13,7 +13,7 @@ const schema = () => {
         t.string("email", 90)
           .notNullable()
           .unique();
-        t.string("phoneno", 90).notNullable();
+        t.string("phoneno", 90);
         t.string("password", 90).notNullable();
         t.string("imageurl", 9999).defaultTo(
           "https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-and-shapes-3/177800/129-512.png"
@@ -37,6 +37,7 @@ const schema = () => {
         t.string("fullstreet", 50).notNullable();
         t.integer("bedrooms").notNullable();
         t.integer("sittingrooms").notNullable();
+        t.string('title', 300).notNullable();
         t.integer("toilets").notNullable();
         t.string("imageurl1", 999).notNullable();
         t.string("imageurl2", 999).notNullable();
@@ -75,6 +76,7 @@ const schema = () => {
         t.integer('bedrooms').notNullable();
         t.integer('sittingrooms').notNullable();
         t.integer('toilets').notNullable();
+        t.string('title', 300).notNullable();
         t.string('date-added').notNullable();
         t.string('type').notNullable();
         t.string('status').notNullable();
@@ -99,6 +101,7 @@ const schema = () => {
         t.string("fullstreet", 50).notNullable();
         t.integer("bedrooms").notNullable();
         t.integer("sittingrooms").notNullable();
+        t.string('title', 300).notNullable();
         t.integer("toilets").notNullable();
         t.string("imageurl1", 999).notNullable();
         t.string("imageurl2", 999).notNullable();
@@ -130,6 +133,7 @@ const schema = () => {
         t.string("area", 100).notNullable();
         t.string("fullstreet", 50).notNullable();
         t.jsonb("features").notNullable();
+        t.string('title', 300).notNullable();
         t.string("imageurl1", 999).notNullable();
         t.string("imageurl2", 999).notNullable();
         t.string("imageurl3", 999).notNullable();
@@ -161,6 +165,7 @@ const schema = () => {
         t.jsonb("features").notNullable();
         t.integer("bedrooms").notNullable();
         t.integer("sittingrooms").notNullable();
+        t.string('title', 300).notNullable();
         t.integer("toilets").notNullable();
         t.string("imageurl1", 999).notNullable();
         t.string("imageurl2", 999).notNullable();
@@ -198,6 +203,7 @@ const schema = () => {
         t.string("moveInDate", 20).notNullable();
         t.string("budget", 14).notNullable();
         t.string("gender").notNullable();
+        t.string('plan');
         t.timestamp("date").defaultTo(knex.fn.now());
       });
     }
@@ -224,9 +230,10 @@ const schema = () => {
         t.string("name", 999).notNullable();
         t.string("phoneno", 150).notNullable();
         t.string("message", 999).notNullable();
-        t.boolean("read").defaultTo(false);
         t.string('type').notNullable();
+        t.boolean("read").defaultTo(false);
         t.string('email', 89);
+        t.integer('user_id');
         t.timestamp("date").defaultTo(knex.fn.now());
       });
     }
