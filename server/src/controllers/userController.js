@@ -6,7 +6,8 @@ const userHelper = require('../Helper/user.helper');
 
 dotenv.config();
 
-const confirmEmailTemplate = require('../EmailTemplate/EmailComferm')
+const confirmEmailTemplate = require('../EmailTemplate/EmailComferm');
+const { generateToken } = require('../Helper/user.helper');
 
 class UserController {
     /**
@@ -246,6 +247,48 @@ class UserController {
                 message: 'failed'
             })
         }
+    };
+
+    static googleLogin(req, res){
+        const { 
+            fullname, 
+            username, 
+            email, 
+            phoneno, 
+            password, 
+            imageurl 
+        } = req.body;
+        knex.select('*').from('users').where({
+            email
+        }).returning('*')
+            .then(user => {
+                if(user.length > 0){
+                    // send user data
+                    res.json({
+                        user: user[0],
+                        token: generateToken({ email: user[0].email, id: user[0].id })
+                    })
+                }else {
+                    knex('users').insert({
+                        fullname,
+                        username,
+                        email,
+                        phoneno,
+                        password,
+                        imageurl
+                    }).returning('*')
+                        .then(user => {
+                            res.json({
+                                user: user[0],
+                                token: generateToken({ email: user[0].email, id: user[0].id })
+                            })
+                        })
+                        .catch(err => {
+                            res.status(400).json({message: 'bad request' })
+                        })
+                }
+            })
+        
     }
 
 }
