@@ -2,6 +2,7 @@ const express = require('express');
 const userRoute = express.Router();
 const userController = require('../controllers/userController');
 const userValidation = require('../middlewares/userValidation');
+const { googleLogin } = require('../controllers/userController');
 const { validateToken } = userValidation;
 const {
   signupUser,
@@ -24,5 +25,7 @@ userRoute.post('/login', loginUser);
 userRoute.put('/users/:userid', updateUserProfile);
 
 userRoute.post('/activate/:userid', activate);
+
+userRoute.post('/login/google', googleLogin);
 
 module.exports = userRoute;
