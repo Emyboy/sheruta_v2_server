@@ -20,10 +20,30 @@ const schema = () => {
         );
         t.string("bio", 90);
         t.boolean("sharing").defaultTo(false);
+        t.boolean('isAgent').defaultTo(false);
         t.boolean("mailing").defaultTo(false);
         t.boolean("uploading").defaultTo(false);
         t.timestamp("date").defaultTo(knex.fn.now());
       });
+    }
+  });
+
+  // Agent Table
+  knex.schema.hasTable("agent").then((exists) => {
+    if(!exists){
+      return knex.schema.createTable("agent", t => {
+        t.increments("id").primary();
+        t.integer('user_id').notNullable();
+        t.string('company_name', 99).notNullable().unique();
+        t.string('company_phone_no', 19);
+        t.string('company_address', 200);
+        t.string('company_logo', 999).defaultTo('https://www.iconfinder.com/data/icons/eco-overcolor/512/plant-512.png');
+        t.string('company_website', 999);
+        t.string('instagram', 999);
+        t.string('facebook', 999);
+        t.string('twitter', 999);
+        t.timestamp("date").defaultTo(knex.fn.now());
+      })
     }
   });
 
@@ -57,69 +77,6 @@ const schema = () => {
         t.string("paymentplan", 15)
           .notNullable()
           .defaultTo("Per Year");
-        t.timestamp("date").defaultTo(knex.fn.now());
-      });
-    }
-  });
-
-  knex.schema.hasTable("featured").then(function(exists) {
-    if (!exists) {
-      return knex.schema.createTable("featured", function(t) {
-        t.increments("id").primary();
-        t.integer('user_id').notNullable();
-        t.string('email').notNullable();
-        t.string('phoneno').notNullable();
-        t.string('imageurl1').notNullable();
-        t.string('imageurl2').notNullable();
-        t.string('imageurl3').notNullable();
-        t.string('imageurl4').notNullable();
-        t.integer('bedrooms').notNullable();
-        t.integer('sittingrooms').notNullable();
-        t.integer('toilets').notNullable();
-        t.string('title', 300).notNullable();
-        t.string('date-added').notNullable();
-        t.string('type').notNullable();
-        t.string('status').notNullable();
-        t.string('address').notNullable();
-        t.string('state').notNullable();
-        t.string('price').notNullable();
-        t.string('payment_plan').notNullable();
-        t.boolean('verified').defaultTo(false);
-        t.timestamp("date").defaultTo(knex.fn.now());
-      });
-    }
-  });
-
-  // Hostels table
-  knex.schema.hasTable("hostel").then(function(exists) {
-    if (!exists) {
-      return knex.schema.createTable("hostel", function(t) {
-        t.increments("id").primary();
-        t.string("area", 100).notNullable();
-        t.jsonb("features").notNullable();
-        t.string("street", 100).notNullable();
-        t.string("fullstreet", 50).notNullable();
-        t.integer("bedrooms").notNullable();
-        t.integer("sittingrooms").notNullable();
-        t.string('title', 300).notNullable();
-        t.integer("toilets").notNullable();
-        t.string("imageurl1", 999).notNullable();
-        t.string("imageurl2", 999).notNullable();
-        t.string("imageurl3", 999).notNullable();
-        t.string("imageurl4", 999).notNullable();
-        t.string("bio", 999).notNullable();
-        t.string("name", 20)
-          .notNullable()
-          .unique();
-        t.string("price", 20).notNullable();
-        t.string("paymentplan", 15)
-          .notNullable()
-          .defaultTo("Per Year");
-        t.integer("squarefeet");
-        t.string("type", 20).defaultTo("Hostel");
-        t.string("status", 20).defaultTo("For Sale");
-        t.integer("cube").defaultTo(0);
-        t.integer("views").defaultTo(0);
         t.timestamp("date").defaultTo(knex.fn.now());
       });
     }
@@ -209,19 +166,6 @@ const schema = () => {
     }
   });
 
-  // Views table
-  knex.schema.hasTable("views").then(function(exists) {
-    if (!exists) {
-      return knex.schema.createTable("views", function(t) {
-        t.increments("id").primary();
-        t.integer("views").notNullable();
-        t.integer("hostelid").notNullable();
-        t.integer("userid").notNullable();
-        t.timestamp("date").defaultTo(knex.fn.now());
-      });
-    }
-  });
-
   // messages
   knex.schema.hasTable("message").then(function(exists) {
     if (!exists) {
@@ -234,36 +178,6 @@ const schema = () => {
         t.boolean("read").defaultTo(false);
         t.string('email', 89);
         t.integer('user_id');
-        t.timestamp("date").defaultTo(knex.fn.now());
-      });
-    }
-  });
-
-  // cubes
-  knex.schema.hasTable("cube").then(function(exists) {
-    if (!exists) {
-      return knex.schema.createTable("cube", function(t) {
-        t.increments("id").primary();
-        t.integer("userid").notNullable();
-        t.string("area", 100).notNullable();
-        t.string("street", 100).notNullable();
-        t.string("fullstreet", 50).notNullable();
-        t.integer("bedrooms").notNullable();
-        t.integer("sittingrooms").notNullable();
-        t.integer("toilets").notNullable();
-        t.string("imageurl1", 999).notNullable();
-        t.string("imageurl2", 999).notNullable();
-        t.string("imageurl3", 999).notNullable();
-        t.string("imageurl4", 999).notNullable();
-        t.string("price", 20).notNullable();
-        t.string("type", 20).notNullable();
-        t.string("status", 20).notNullable();
-        t.integer("cube").defaultTo(0);
-        t.integer("views").defaultTo(0);
-        t.string("bio", 999).notNullable();
-        t.string("name", 20).notNullable();
-        t.integer("squarefeet").notNullable();
-        t.string("paymentplan", 20).notNullable();
         t.timestamp("date").defaultTo(knex.fn.now());
       });
     }

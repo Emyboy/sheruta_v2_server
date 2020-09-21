@@ -9,7 +9,7 @@
     "build": ""
   },
   "keywords": [],
-  "author": "",
+  "author": "Ifeora Chukwuemeka",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
