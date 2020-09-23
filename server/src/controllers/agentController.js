@@ -9,7 +9,7 @@ class AgentController {
      * @param {object} res 
      */
     static becomeAnAgent(req, res) {
-        const { 
+        const {
             user_id,
             company_name,
             company_phone_no,
@@ -26,11 +26,11 @@ class AgentController {
             company_logo
         }).returning('*')
             .then(data => {
-                if(data.length === 0){
+                if (data.length === 0) {
                     res.status(400).json({
                         message: 'error'
                     })
-                }else {
+                } else {
                     res.status(200).json({
                         message: "Account Created",
                         data
@@ -48,7 +48,7 @@ class AgentController {
      * @param {object} req 
      * @param {object} res 
      */
-    static updateAgentAccount(req, res){
+    static updateAgentAccount(req, res) {
         const {
             user_id,
             company_name,
@@ -72,9 +72,9 @@ class AgentController {
             twitter
         }).returning('*')
             .then(data => {
-                if(data.length === 0){
+                if (data.length === 0) {
                     res.status(400).json({ message: 'error' })
-                }else {
+                } else {
                     res.status(200).json({
                         message: 'Saved',
                         data
@@ -90,14 +90,24 @@ class AgentController {
         const { user_id } = req.params;
         knex('agent').where({ user_id }).returning('*')
             .then(account => {
-                if(account.length === 0){
+                if (account.length === 0) {
                     res.status(404).json({ message: 'no found' })
-                }else {
+                } else {
                     res.status(200).json({ account })
                 }
             })
             .catch(err => {
                 res.json(500).json({ message: 'error' })
+            })
+    };
+
+    static getAllAgent(req, res) {
+        knex.select('*').from('agent').returning('*')
+            .then(list => {
+                res.json({ list })
+            })
+            .catch(err => {
+                res.status(500).json({ message: 'error' })
             })
     }
 
