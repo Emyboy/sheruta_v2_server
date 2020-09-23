@@ -66,7 +66,7 @@ class UserController {
                 return res.json({
                     status: 200,
                     message: 'Logged In',
-                    user, token 
+                    user, token
                 })
             } else {
                 return res.json({
@@ -249,26 +249,28 @@ class UserController {
         }
     };
 
-    static googleLogin(req, res){
-        const { 
-            fullname, 
-            username, 
-            email, 
-            phoneno, 
-            password, 
-            imageurl 
+    static googleLogin(req, res) {
+        const {
+            fullname,
+            username,
+            email,
+            phoneno,
+            password,
+            imageurl
         } = req.body;
         knex.select('*').from('users').where({
             email
         }).returning('*')
-            .then(user => {
-                if(user.length > 0){
+            .then(async user => {
+                if (user.length > 0) {
                     // send user data
+                    const agent = await knex('agent').where({ user_id: user[0].id }).returning('*');
+                    console.log(agent)
                     res.json({
-                        user: user[0],
-                        token: generateToken({ email: user[0].email, id: user[0].id })
+                        user: { ...user[0], agent: agent.length > 0 ? agent[0] : false },
+                        token: generateToken({ email: user[0].email, id: user[0].id }),
                     })
-                }else {
+                } else {
                     knex('users').insert({
                         fullname,
                         username,
@@ -284,11 +286,11 @@ class UserController {
                             })
                         })
                         .catch(err => {
-                            res.status(400).json({message: 'bad request' })
+                            res.status(400).json({ message: 'bad request' })
                         })
                 }
             })
-        
+
     }
 
 }
