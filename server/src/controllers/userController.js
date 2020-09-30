@@ -256,7 +256,8 @@ class UserController {
             email,
             phoneno,
             password,
-            imageurl
+            imageurl,
+            login_type
         } = req.body;
         knex.select('*').from('users').where({
             email
@@ -277,7 +278,8 @@ class UserController {
                         email,
                         phoneno,
                         password,
-                        imageurl
+                        imageurl,
+                        login_type
                     }).returning('*')
                         .then(user => {
                             res.json({
@@ -286,6 +288,7 @@ class UserController {
                             })
                         })
                         .catch(err => {
+                            console.log(err);
                             res.status(400).json({ message: 'bad request' })
                         })
                 }
