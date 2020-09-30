@@ -5,6 +5,7 @@ const knex = require("../../Knex")
 module.exports = class PropertyController {
     
     static addNewProperty(req, res){
+        console.log('adding', req.body);
         const {
             agent_id,
             user_id,
@@ -19,6 +20,7 @@ module.exports = class PropertyController {
             type,
             status,
             features,
+            uuid
         } = req.body;
         knex('property').insert({
             agent_id,
@@ -34,6 +36,7 @@ module.exports = class PropertyController {
             type,
             status,
             features,
+            uuid
         }).returning('*')
             .then(upload => {
                 res.send(upload)
@@ -43,6 +46,19 @@ module.exports = class PropertyController {
                 res.send(err);
                 console.log(err);
 
+            })
+    };
+
+    static getAgentsProperty(req, res){
+        const { agent_id } = req.params;
+        knex('property').where({ agent_id }).returning('*')
+            .then(list => {
+                res.json(list)
+            })
+            .catch(err => {
+                res.status(500).json({ 
+                    message: 'error'
+                })
             })
     }
 

@@ -248,19 +248,20 @@ const schema = () => {
         t.string("location", 100).notNullable();
         t.integer("bedrooms").notNullable();
         t.integer("sittingrooms").notNullable();
-        t.string('title', 300).notNullable();
+        t.string('title', 500).notNullable();
         t.integer("toilets").notNullable();
         t.jsonb('image_urls').notNullable();
         t.string("description", 999).notNullable();
-        t.string("price", 20).notNullable();
+        t.string("price", 30).notNullable();
+        t.jsonb("features").notNullable();
+        t.string('uuid').notNullable();
         t.string('payment_plan').defaultTo('none');
         t.string('token');
-        t.string("type", 20).defaultTo("apartment");
-        t.string("status", 20).defaultTo("For Rent");
+        t.string("type", 60).defaultTo("apartment");
+        t.string("status", 30).defaultTo("For Rent");
         t.integer("bookmarked").defaultTo(0);
         t.boolean('verified').defaultTo(false);
         t.integer("views").defaultTo(0);
-        t.jsonb("features").notNullable();
         t.string('moment').defaultTo(date.toDateString());
         t.timestamp("date").defaultTo(knex.fn.now());
       })
