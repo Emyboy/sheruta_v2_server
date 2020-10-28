@@ -62,5 +62,43 @@ module.exports = class PropertyController {
             })
     }
 
+    static getSingleProperty(req, res){
+        const { agent_id, property_id } = req.params;
+        knex('property').where({
+            id: property_id,
+            agent_id
+        }).returning('*')
+            .then(list => {
+                if(list.length > 0){
+                    res.status(200).json(list);
+                }else {
+                    res.status(404).json({
+                        message: 'not found'
+                    })
+                }
+            })
+            .catch(err => {
+                res.json({
+                    message: 'bad request',
+                    status: 500
+                })
+            })
+
+    }
+
+
+    static deleteApartment(req, res){
+        const { property_id } = req.params;
+        knex('property').where({
+            id: property_id
+        }).returning('*')
+            .then(deleted => {
+                res.send(deleted)
+            })
+            .catch(err => {
+                res.send(err)
+            })
+    }
+
 }
 
