@@ -90,7 +90,7 @@ module.exports = class PropertyController {
     static deleteApartment(req, res){
         const { property_id } = req.params;
         knex('property').where({
-            id: property_id
+            uuid: property_id
         }).delete().returning('*')
             .then(deleted => {
                 res.send(deleted)
