@@ -115,6 +115,25 @@ class AgentController {
             })
     }
 
+    static getAgentDataByName(req, res) {
+        const { company_name } = req.params;
+        knex('agent').where({
+            company_name
+        }).returning('*')
+            .then(data => {
+                console.log(data);
+                if (data.length > 0) {
+                    res.status(200).json(data);
+                } else {
+                    res.status(404).json({ message: 'not found' })
+                }
+            })
+            .catch(err => {
+                res.status(500).json({ message: 'server error' })
+                console.log(err);
+            })
+    }
+
 }
 
 module.exports = AgentController;

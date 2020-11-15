@@ -6,10 +6,12 @@ const {
     becomeAnAgent,
     updateAgentAccount,
     getAgentByUserId,
-    getAllAgent
+    getAllAgent,
+    getAgentDataByName
 } = agetnController;
 
 agentRoute.post('/agent', becomeAnAgent);
+agentRoute.get('/agent/name/:company_name', getAgentDataByName);
 agentRoute.put('/agent', updateAgentAccount);
 agentRoute.get('/agent/all', getAllAgent);
 agentRoute.get('/agent/:user_id', getAgentByUserId);
