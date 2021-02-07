@@ -1,4 +1,4 @@
-const knex = require("../../Knex");
+const knex = require('../../../knex/knex');
 const AdminHelper = require("../Helper/admin.helper");
 
 class ShareUplaodController {

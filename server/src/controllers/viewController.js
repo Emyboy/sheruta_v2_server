@@ -1,4 +1,4 @@
-const db = require('../../Knex');
+const db = require('../../../knex/knex');
 
 module.exports = class ViewController {
     static async getAllAreas(req, res){

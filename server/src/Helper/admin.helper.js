@@ -1,5 +1,5 @@
 const sendGrid = require('@sendgrid/mail');
-const knex = require('../../Knex');
+const knex = require('../../../knex/knex');
 
 module.exports = class AdminHelper {
 

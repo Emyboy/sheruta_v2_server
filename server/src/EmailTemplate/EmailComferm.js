@@ -7,7 +7,7 @@ const host = require('./index');
  * @param {string} hash - email hash
  * @returns {string} markup template
  */
-const welcomeTemplate = (username, email, hash) => (
+const welcomeTemplate = (firstname, username, email, hash) => (
   `<head>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <style>
@@ -6798,13 +6798,14 @@ body{
     </div>
     <div>
         <h2 class = "headertwo">
-            Hello!! ${username}
+            Hello!! ${firstname}
         </h2>
     </div>
     <div>
         <h4 class = "headerthree">
-            Thank you for creating an account with us.
-            to finish registration....
+            Thank you for creating an account with us. <br />Your username is ${username} <br />
+            
+            Please click the below link to finish registration.
         </h4>
     </div>
     <a href='http://www.sheruta.ng/activated' class="container mt-3">

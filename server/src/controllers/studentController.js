@@ -1,4 +1,4 @@
-const knex = require('../../Knex');
+const knex = require('../../../knex/knex');
 
 module.exports = class StudentController {
 

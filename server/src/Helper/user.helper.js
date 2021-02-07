@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const sendGrid = require('@sendgrid/mail');
+require('dotenv').config();
+
 
 class UserHelper {
 
@@ -45,7 +47,7 @@ class UserHelper {
 * @param {string} htmlMarkup
 * @return {undefined}
 */
-    static sendMail(email, from, subject, text, htmlMarkup) {
+     static async sendMail(email, from, subject, text, htmlMarkup) {
         console.log('sending email to ....', email);
         sendGrid.setApiKey(process.env.MAIL_API_KEY);
         const message = {
@@ -55,7 +57,12 @@ class UserHelper {
             text,
             html: htmlMarkup
         };
-        return sendGrid.send(message);
+        
+        sendGrid.send(message).then(() => { console.log("Email Sent")}).catch((error) => {
+            console.error(error);
+        });
+   
+        
     }
 }
 

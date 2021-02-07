@@ -1,5 +1,5 @@
 
-const knex = require('../../Knex');
+const knex = require('../../../knex/knex');
 
 
 

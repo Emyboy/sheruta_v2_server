@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
-const knex = require('../../Knex');
+//const knex = require('../../knex/knex');
+const {check, validationResult} = require('express-validator');
+const membership = require('../system/membership');
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
 const userHelper = require('../Helper/user.helper');
@@ -16,34 +18,85 @@ class UserController {
      * @param {object} res 
      */
     static async signupUser(req, res) {
-        const { password, email, phoneno, username, fullname } = req.body;
-        const hash = bcrypt.hashSync(password, 8);
-        console.log('hash', hash, req.body);
+        
+        // Validate inputs
+        await  check('firstname', "Please enter your firstname").trim().notEmpty().run(req);
+        await  check('firstname', 'Firstname requires 50 or less characters').trim().isLength({max: 50}).run(req);
+        await check('lastname', 'Please enter your lastname').trim().notEmpty().run(req);
+        await  check('lastname', 'Lastname requires 50 or less characters').trim().isLength({max: 50}).run(req);
+        await  check('username', "Please enter your username").trim().notEmpty().run(req);
+        await  check('username', 'Please enter a username between 6 to 40 characters').trim().isLength({min:6, max: 40}).run(req);
+        await  check('email', 'Please enter a valid email').trim().isEmail().run(req); 
+        await  check('email', 'Please enter an email address with 90 or less characters').trim().isLength({max: 90}).run(req);
+        await  check('password', 'Please enter a password between 6 to 90 characters').exists().isLength({min: 6, max: 90}).run(req);
+        await  check('confirmpassword', 'Password does not match').exists().custom((value,{req}) => value === req.body.password).run(req);           
+        await  check('phoneno', 'Please enter a valid phone number').trim().optional().isMobilePhone().run(req);
+            
+        const errors = validationResult(req);
+
+        // Check if errors occur
+        if(!errors.isEmpty()){
+            return res.status(400).json({errors: errors.array()});
+        }
+    
+       
         try {
-            const user = await knex('users').insert({ fullname, email, phoneno, username, password: hash }).returning('*')
-            if (user.length === 0) {
-                return res.json({
-                    status: 404,
-                    message: "Something Went Wrong",
-                    user
-                })
+            
+            let { firstname, lastname, password, email, phoneno, username} = req.body;
+           
+            username = username.toLowerCase();
+            email = email.toLowerCase();
+           
+            let user = await membership.findOneUserByUsernameOrEmail(username, email);
+           
+            if(user && user.username === username){
+                return res.status(409).json({errors: [{param: 'username' ,message: 'Username is taken'}]});
+            }else if(user && user.email === email){
+                return res.status(409).json({errors: [{param: 'email' ,message: 'Email is taken'}]});
+            }
+                
+          
+            firstname = firstname.replace(/\s+/g,' ').toLowerCase();
+            lastname = lastname.replace(/\s+/g,' ').toLowerCase();
+            const salt = await bcrypt.genSalt(10);
+            password = await bcrypt.hash(password, salt);
+            /*const avatar = gravatar.url(email,{
+                s: '200',
+                r: 'pg',
+                d: 'mm'
+            });*/
+
+            user = await membership.saveUser({ 
+                firstname: firstname, 
+                lastname: lastname,
+                email: email, 
+                phoneno: phoneno, 
+                username: username, 
+                password: password //imageurl: avatar
+                 });
+
+            
+            if (!user) {
+                throw "Something Went Wrong. Try again";  
             } else {
-                userHelper.sendMail(email,
-                    'Sheruta <no-reply@sheruta.ng>',
+               await userHelper.sendMail(email,
+                    'chika.callis@gmail.com',
                     'Validate Email',
                     `Welcome ${email}`,
-                    confirmEmailTemplate(username, email, phoneno));
+                    confirmEmailTemplate(firstname.charAt(0).toUpperCase() + firstname.slice(1), username, email, phoneno));
+
+                const newUser = (({firstname,lastname, username, email, phoneno}) => ({firstname,lastname, username, email, phoneno}))(user[0]);
+              
                 return res.status(200).json({
-                    status: 200,
-                    message: "Signup Successfull",
-                    user
-                })
+                    message: "Signup Successful",
+                    user: newUser
+                });
             }
+
         } catch (error) {
-            res.json({
-                message: 'Login Error!',
-                status: 400,
-                error
+            console.error(error.message);
+           return res.status(500).json({
+                message: 'Server Error!'
             })
         }
     };
