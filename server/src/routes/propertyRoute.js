@@ -6,8 +6,9 @@ const {
     getSingleProperty,
     deleteApartment
 } = propertyController;
+const {verifyAuthHeader} = require('../middlewares/userValidation')
 
-propertyRoute.post('/property', addNewProperty);
+propertyRoute.post('/property', verifyAuthHeader, addNewProperty);
 propertyRoute.get('/property/:agent_id', getAgentsProperty);
 propertyRoute.get('/property/:property_id/:agent_id', getSingleProperty);
 propertyRoute.delete('/property/:property_id', deleteApartment);

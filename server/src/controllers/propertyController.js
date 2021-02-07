@@ -20,7 +20,7 @@ module.exports = class PropertyController {
             type,
             status,
             features,
-            uuid
+            uuid,
         } = req.body;
         knex('property').insert({
             agent_id,
@@ -33,10 +33,10 @@ module.exports = class PropertyController {
             image_urls,
             description,
             price,
-            type,
+            type: type||'apartment',
             status,
             features,
-            uuid
+            uuid,
         }).returning('*')
             .then(upload => {
                 res.send(upload)
