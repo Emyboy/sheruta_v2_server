@@ -9,7 +9,7 @@
     "server": "nodemon server/src/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ifeora Chukwuemeka",
   "license": "ISC",
   "dependencies": {
     "@babel/cli": "^7.12.1",

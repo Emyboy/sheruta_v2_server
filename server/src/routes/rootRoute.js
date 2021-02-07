@@ -14,6 +14,8 @@ const scrapingRoute = require('./ScrapingRoute');
 const messageRoute = require('./messageRoute');
 const viewRoute = require('./viewRoute');
 const featuredRoute = require('./featuredRoute');
+const agentRoute = require('./agentRoute');
+const propertyRoute = require('./propertyRoute');
 
 rootRoute.use(sharedRoute);
 rootRoute.use(hostelRoute);
@@ -29,6 +31,7 @@ rootRoute.use(scrapingRoute);
 rootRoute.use(messageRoute);
 rootRoute.use(viewRoute);
 rootRoute.use(featuredRoute);
-
+rootRoute.use(agentRoute);
+rootRoute.use(propertyRoute);
 
 module.exports = rootRoute;

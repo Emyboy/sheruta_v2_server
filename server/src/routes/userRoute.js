@@ -30,3 +30,4 @@ userRoute.post('/activate/:userid', activate);
 userRoute.post('/login/google', googleLogin);
 
 module.exports = userRoute;
+

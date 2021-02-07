@@ -11,6 +11,9 @@ class SharingController {
         try {
             const user = await knex('sharing').insert(req.body).returning('*');
             if (user.length === 1 && user[0].userid === req.body.userid) {
+                knex('users').where({ id: user[0].userid }).update({ sharing: true }).returning('*')
+                    .then(update => console.log('UPDATE DATA -', update[0]))
+                    .catch(err => console.log('UPDATE ERROR ', err))
                 res.status(200).json({
                     alert: "Signed Up Success",
                     user,

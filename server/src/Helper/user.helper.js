@@ -12,7 +12,7 @@ class UserHelper {
             const token = jwt.sign({
                 exp: Math.floor(Date.now() / 1000) + (60 * 60),
                 data: payload
-            }, 'process.env.SECRET_KEY');
+            }, process.env.SECRET_KEY);
             return token;
         } catch (error) {
             console.log(error);
